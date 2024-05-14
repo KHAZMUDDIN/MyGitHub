@@ -1,9 +1,11 @@
 import os
+
 import pandas as pd
+
 
 def comp_name_of_ind(ind):
     # Directory path
-    directory = r'E:\KHAZMUDDIN\BTECH\PYTHON\py_projects\PyStock\Industries\\'+ind+'\\profit-lossVI'
+    directory = r'E:\KHAZMUDDIN\BTECH\PYTHON\py_projects\PyStock\Industries\\' + ind + '\\profit-lossVI'
 
     # Get all file names in the directory
     files = os.listdir(directory)
@@ -15,11 +17,14 @@ def comp_name_of_ind(ind):
     # for file_name in file_names:
     #     print(file_name)
     return file_names
+
+
 def all_ind():
     path = r'E:\KHAZMUDDIN\BTECH\PYTHON\py_projects\PyStock\Industries\\all_industries.xlsx'
     all_ind = pd.read_excel(path)
     all_ind_name = all_ind['Industry_Name'].tolist()
     return all_ind_name
+
 
 def init():
     all_ind_name = all_ind()
