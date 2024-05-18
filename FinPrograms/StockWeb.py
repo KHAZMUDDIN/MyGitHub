@@ -11,6 +11,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import MyModules.After_N_Neg_Months as NMR
 # import After_N_Neg_Months
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import MyModules.After_N_Neg_Months as NMR
 import pandas as pd
 import streamlit as st
 
