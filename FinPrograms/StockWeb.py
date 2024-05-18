@@ -66,12 +66,6 @@ def show_home_page():
     st.write("Company you entered: ", company_name)
 
     TopBot = extreme.nova(company_name)
-    stock_data = extreme.comp_data(company_name)
-    if (stock_data.empty):
-        print(f"No Price Data for {company_name}")
-    else:
-        st.write(f"Processing data for: {company_name}")
-        st.write(stock_data)
 
     if (st.button('Submit')):
         if (TopBot.empty):

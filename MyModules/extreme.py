@@ -10,54 +10,53 @@ from datetime import datetime
 # Stock price of the coapny on daily basis in the range of <TopBot_line> from <start_date> to <end_date> on <Close> price.
 # The last Top or Bottom may be incomplete.
 
-def comp_data(comp):
-    folder_path = r'E:\KHAZMUDDIN\BTECH\PYTHON\py_projects\PyStock\Industries'
-    all_ind = [name for name in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, name))]
 
-    for ind in all_ind:
-        path = folder_path + '/' + ind + '/' + '/all_comp_of_' + ind + '.xlsx'
-        comp_data_of_ind = pd.read_excel(path)
-        res = comp_data_of_ind[comp_data_of_ind['Comp_Name'] == comp]
-
-        # Check if the DataFrame is empty
-        if res.empty:
-            pass
-        else:
-            print(f"Industry: {ind} \n company: {comp}")
-            PATH_json = r'E:\KHAZMUDDIN\BTECH\PYTHON\py_projects\PyStock\Industries\\' + ind + r'\company_info\\' + comp + '.json'
-            # Open the JSON file for reading
-            with open(PATH_json, 'r') as file:
-                # Load the JSON data from the file
-                comp_data_json = json.load(file)
-
-            if len(comp_data_json) == 0:
-                print(f"No data for {comp}")
-                continue
-            # Now 'data' contains the contents of the JSON file
-            # You can access its contents as a Python dictionary or list
-
-            bseID = comp_data_json['details']['bseId']
-            nseID = comp_data_json['details']['nseId']
-
-            if (nseID and bseID):
-                compID = nseID + '.BO'
-            else:
-                if (nseID):
-                    compID = nseID + '.NS'
-                else:
-                    compID = bseID + '.BO'
-
-            try:
-                # Fetch historical stock prices for the specified ticker symbols
-                stock_data = yf.download(compID, start=start_date, end=end_date)
-                return stock_data
-
-            except Exception as e:
-                # Handle the exception
-                print(f"Failed to download data: {e}")
-            break
 def nova(comp_name_to_search, TopBot_line=20, start_date='2003-01-03', end_date=datetime.now().strftime('%Y-%m-%d')):
+    def comp_data(comp):
+        all_ind = [name for name in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, name))]
 
+        for ind in all_ind:
+            path = folder_path + '/' + ind + '/' + '/all_comp_of_' + ind + '.xlsx'
+            comp_data_of_ind = pd.read_excel(path)
+            res = comp_data_of_ind[comp_data_of_ind['Comp_Name'] == comp]
+
+            # Check if the DataFrame is empty
+            if res.empty:
+                pass
+            else:
+                print(f"Industry: {ind} \n company: {comp}")
+                PATH_json = r'E:\KHAZMUDDIN\BTECH\PYTHON\py_projects\PyStock\Industries\\' + ind + r'\company_info\\' + comp + '.json'
+                # Open the JSON file for reading
+                with open(PATH_json, 'r') as file:
+                    # Load the JSON data from the file
+                    comp_data_json = json.load(file)
+
+                if len(comp_data_json) == 0:
+                    print(f"No data for {comp}")
+                    continue
+                # Now 'data' contains the contents of the JSON file
+                # You can access its contents as a Python dictionary or list
+
+                bseID = comp_data_json['details']['bseId']
+                nseID = comp_data_json['details']['nseId']
+
+                if (nseID and bseID):
+                    compID = nseID + '.BO'
+                else:
+                    if (nseID):
+                        compID = nseID + '.NS'
+                    else:
+                        compID = bseID + '.BO'
+
+                try:
+                    # Fetch historical stock prices for the specified ticker symbols
+                    stock_data = yf.download(compID, start=start_date, end=end_date)
+                    return stock_data
+
+                except Exception as e:
+                    # Handle the exception
+                    print(f"Failed to download data: {e}")
+                break
     def search_or_suggest(search_string, list_of_strings):
         # Check if the search_string is in the list_of_strings
         if search_string in list_of_strings:
