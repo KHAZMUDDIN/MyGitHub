@@ -1,10 +1,14 @@
 import streamlit as st
 import os
 import sys
+
+import comp_data
+
 # Add the path to the main program folder
 sys.path.append(r'E:\KHAZMUDDIN\BTECH\PYTHON\py_projects\PyStock\my_modules')
 import extreme
 import all_comp_ind_as_list
+from comp_base_data import comp_data
 
 # Append the parent directory to the system path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -14,6 +18,7 @@ import MyModules.After_N_Neg_Months as NMR
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import MyModules.After_N_Neg_Months as NMR
+# import MyModules.comp_data
 import pandas as pd
 import streamlit as st
 
@@ -31,7 +36,7 @@ end_date = '2024-04-01'
 # =================================================================
 
 def main():
-    st.title("Streamlit Multi-Page App")
+    # st.title("Streamlit Multi-Page App")
 
     # Add a sidebar
     st.sidebar.title("Navigation")
@@ -47,36 +52,31 @@ def main():
         show_contact_page()
 
 def show_home_page():
-    st.header("Home Page")
-    st.write("Welcome to the Home Page!")
-    all_comp_name = all_comp_ind_as_list.init()
 
     # =====================Streamlit======================================
-    # Title
-    st.title("Top and Bottom Finder of any stock")
 
-    # Markdown
-    st.markdown("Enter the name of any publicaly listed company of India")
-
-    # Selection box
-
-    # first argument takes the titleof the selectionbox
-    # second argument takes options
-    company_name = st.selectbox("Company name: ",
-                                all_comp_name)
+    stock_data = comp_data(comp_name)
+    st.write(comp_data)
 
     # print the selected hobby
-    st.write("Company you entered: ", company_name)
+    # st.write("Company you entered: ", company_name)
 
     TopBot = extreme.nova(company_name)
+    # comp_prices = extreme.comp_data(company_name)
+    # st.write(comp_prices)
 
     if (st.button('Submit')):
+        # Title
+        # st.title("Tops and Bottoms")
+        st.markdown("<h1 style='text-align: center;'>Tops and Bottoms</h1>",
+                    unsafe_allow_html=True)
         if (TopBot.empty):
             print(f"No Data for {company_name}")
         else:
-            st.write(f"Processing data for: {company_name}")
-            st.write(TopBot)
-            st.success(f"TopBot of {company_name}")
+            # st.write(f"Processing data for: {company_name}")
+            # st.write(TopBot)
+            st.dataframe(TopBot, width=600)
+            # st.success(f"TopBot of {company_name}")
 
 def After_Negative_Month():
     st.header("After Negative Month")
@@ -162,4 +162,12 @@ def show_contact_page():
     st.write("You can contact us at contact@example.com.")
 
 if __name__ == "__main__":
+    # Markdown
+    # st.title("Enter the Name of any Publicaly Listed Company of India")
+    st.markdown("<h1 style='text-align: center;'>Enter the Name of any Publicaly Listed Company of India</h1>",
+                unsafe_allow_html=True)
+    all_comp_name = all_comp_ind_as_list.init()
+    # first argument takes the titleof the selectionbox
+    # second argument takes options
+    company_name = st.selectbox("Company name:", all_comp_name, label_visibility='collapsed')
     main()
